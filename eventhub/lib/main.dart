@@ -1,4 +1,8 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:eventhub/providers/loginprovider.dart';
+import 'package:eventhub/screens/chat.dart';
+import 'package:eventhub/screens/post.dart';
+import 'package:eventhub/screens/profile.dart';
 import 'package:eventhub/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,68 +61,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int index = 1;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final screens = [
+    ChatPage(),
+    PostPage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final List<Widget> items = <Widget>[
+      const Icon(Icons.chat),
+      const Icon(Icons.home),
+      const Icon(Icons.person)
+    ];
+
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        appBar: AppBar(
+          title: index == 0
+              ? const Text("Chat")
+              : index == 1
+                  ? const Text("Posts")
+                  : const Text("Profile"),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          elevation: 0,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: screens[index],
+        bottomNavigationBar: Theme(
+          data: Theme.of(context)
+              .copyWith(iconTheme: const IconThemeData(color: Colors.white)),
+          child: CurvedNavigationBar(
+            backgroundColor: Colors.transparent,
+            color: Colors.orange,
+            items: items,
+            height: 60,
+            animationCurve: Curves.easeInOut,
+            animationDuration: const Duration(milliseconds: 200),
+            index: index,
+            onTap: (index) => setState(() => this.index = index),
+          ),
+        ));
   }
 }

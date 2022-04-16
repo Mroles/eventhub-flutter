@@ -1,4 +1,6 @@
 import 'package:eventhub/main.dart';
+import 'package:eventhub/screens/forgotpassword.dart';
+import 'package:eventhub/screens/post.dart';
 import 'package:eventhub/screens/signup.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +37,16 @@ class Login extends StatelessWidget {
                     const Icon(Icons.key)),
                 const SizedBox(height: 20.0),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  TextTap(context, "Forgot Password",
-                      const MyHomePage(title: "Home"))
+                  TextTap(context, "Forgot Password", ForgotPassword())
                 ]),
                 const SizedBox(height: 40.0),
-                LargeButton(context, _isLoading, "Login",
-                    const MyHomePage(title: "Home")),
+                LargeButton(
+                    context,
+                    _isLoading,
+                    "Login",
+                    MyHomePage(
+                      title: "Home",
+                    )),
                 const SizedBox(height: 20.0),
                 TextTap(context, "Don't Have an Account? Sign Up", SignUp())
               ],
