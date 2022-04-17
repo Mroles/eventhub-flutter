@@ -64,7 +64,7 @@ Widget post(BuildContext context) {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
               child: Row(
-                children: const [Text("Some nonsense")],
+                children: const [Text("sxercdtfvgbyfvrtvbygnhuygtfr")],
               ),
             ),
             CachedNetworkImage(

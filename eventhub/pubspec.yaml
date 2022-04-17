@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   cached_network_image:
   curved_navigation_bar:
+  http:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

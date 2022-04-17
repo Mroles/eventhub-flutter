@@ -1,3 +1,4 @@
+import 'package:eventhub/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,14 @@ Widget TextTap(BuildContext context, String text, Widget widget) {
       text,
       style: const TextStyle(color: Color.fromARGB(255, 206, 22, 9)),
     ),
-    onTap: () => navigateToPage(0, context, widget),
+    onTap: () => text.toLowerCase() == "forgot password"
+        ? navigateToPageLite(0, context, widget)
+        : navigateToPage(0, context, widget),
   );
+}
+
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snacc(
+    BuildContext context, String text) {
+  return ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text(text)));
 }

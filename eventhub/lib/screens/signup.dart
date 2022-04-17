@@ -1,4 +1,5 @@
 import 'package:eventhub/main.dart';
+import 'package:eventhub/screens/login.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +50,8 @@ class SignUp extends StatelessWidget {
                     const Icon(Icons.key)),
                 const SizedBox(height: 40.0),
                 LargeButton(context, _isLoading, "Sign Up",
-                    const MyHomePage(title: "Home"))
+                    const MyHomePage(title: "Home")),
+                TextTap(context, "Already Have an Account? Log In ", Login())
               ],
             ),
           ),

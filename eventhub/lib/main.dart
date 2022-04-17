@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
             items: items,
             height: 60,
             animationCurve: Curves.easeInOut,
-            animationDuration: const Duration(milliseconds: 200),
+            animationDuration: const Duration(milliseconds: 300),
             index: index,
             onTap: (index) => setState(() => this.index = index),
           ),
