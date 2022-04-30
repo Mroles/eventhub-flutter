@@ -56,25 +56,28 @@ class _LoginState extends State<Login> {
                                   AlwaysStoppedAnimation<Color>(Colors.black),
                             )
                           : const Text("Login"),
-                      onPressed: () async {
-                        setState(() {
-                          _isLoading = true;
-                        });
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isLoading = true;
+                              });
 
-                        await logUserIn(_emailController.text,
-                                    _passwordController.text) ==
-                                200
-                            ? navigateToPage(
-                                0, context, const MyHomePage(title: "Home"))
-                            : await logUserIn(_emailController.text,
-                                        _passwordController.text) ==
-                                    401
-                                ? snacc(context, "Wrong Username or Password")
-                                : snacc(context, "An Error Occured");
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      }),
+                              await logUserIn(_emailController.text,
+                                          _passwordController.text) ==
+                                      200
+                                  ? navigateToPage(0, context,
+                                      const MyHomePage(title: "Home"))
+                                  : await logUserIn(_emailController.text,
+                                              _passwordController.text) ==
+                                          401
+                                      ? snacc(
+                                          context, "Wrong Username or Password")
+                                      : snacc(context, "An Error Occured");
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }),
                   const SizedBox(height: 20.0),
                   TextTap(context, "Don't Have an Account? Sign Up", SignUp())
                 ],

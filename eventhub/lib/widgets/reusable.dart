@@ -26,6 +26,26 @@ Widget Textbox(BuildContext context, String labeltext,
   );
 }
 
+Widget TextboxNoIcon(BuildContext context, String labeltext,
+    TextEditingController textEditingController) {
+  return Container(
+    child: TextFormField(
+      autocorrect: false,
+      obscureText: labeltext.toLowerCase() == "password" ||
+              labeltext.toLowerCase() == 'confirm password'
+          ? true
+          : false,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: labeltext,
+          labelStyle:
+              const TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
+      controller: textEditingController,
+    ),
+  );
+}
+
 Widget LargeButton(
     BuildContext context, bool _isLoading, String buttonText, Widget widget) {
   return ElevatedButton(
@@ -58,4 +78,16 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snacc(
     BuildContext context, String text) {
   return ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text(text)));
+}
+
+Widget textArea(
+    BuildContext context, String text, TextEditingController controller) {
+  return TextField(
+    keyboardType: TextInputType.multiline,
+    maxLines: null,
+    decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: text,
+        labelStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
+  );
 }

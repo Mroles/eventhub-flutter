@@ -39,6 +39,10 @@ dependencies:
   curved_navigation_bar:
   http:
   shared_preferences:
+  intl:
+  image_picker:
+  geolocator:
+  google_maps_flutter:
 
 dev_dependencies:
   flutter_test:

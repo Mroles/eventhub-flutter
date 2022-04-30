@@ -1,18 +1,24 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:eventhub/providers/imageprovider.dart';
 import 'package:eventhub/providers/loginprovider.dart';
 import 'package:eventhub/screens/chat.dart';
+import 'package:eventhub/screens/createpost.dart';
 import 'package:eventhub/screens/post.dart';
 import 'package:eventhub/screens/profile.dart';
-import 'package:eventhub/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+final imageProv = ImageProv();
 void main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(
         create: (_) => LoadingProvider(),
-      )
+      ),
+      // FutureProvider(create: (_) => pickImage(), initialData: null)
+      ChangeNotifierProvider(
+        create: (_) => ImageProv(),
+      ),
     ], child: const MyApp()),
   );
 }
@@ -37,7 +43,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.orange,
       ),
-      home: SplashScreen(),
+      home: CreatePost(),
     );
   }
 }
