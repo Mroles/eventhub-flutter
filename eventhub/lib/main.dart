@@ -1,8 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:eventhub/providers/imageprovider.dart';
+import 'package:eventhub/providers/locationprovider.dart';
 import 'package:eventhub/providers/loginprovider.dart';
 import 'package:eventhub/screens/chat.dart';
 import 'package:eventhub/screens/createpost.dart';
+import 'package:eventhub/screens/maps.dart';
 import 'package:eventhub/screens/post.dart';
 import 'package:eventhub/screens/profile.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +17,10 @@ void main() {
       ChangeNotifierProvider(
         create: (_) => LoadingProvider(),
       ),
-      // FutureProvider(create: (_) => pickImage(), initialData: null)
       ChangeNotifierProvider(
         create: (_) => ImageProv(),
       ),
+      ChangeNotifierProvider(create: (_) => LocationProvider())
     ], child: const MyApp()),
   );
 }

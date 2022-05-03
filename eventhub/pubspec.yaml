@@ -41,8 +41,10 @@ dependencies:
   shared_preferences:
   intl:
   image_picker:
-  geolocator:
+  geocoding: ^2.0.4
   google_maps_flutter:
+  geolocator:
+  
 
 dev_dependencies:
   flutter_test:

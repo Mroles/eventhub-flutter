@@ -1,10 +1,10 @@
 import 'dart:io';
-
+import 'package:eventhub/screens/maps.dart';
+import 'package:provider/provider.dart';
+import 'package:eventhub/providers/imageprovider.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:eventhub/providers/imageprovider.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -12,6 +12,7 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
+  File? image;
   DateTime pickedDate = DateTime.now();
   final _eventNameController = TextEditingController();
   final _dateController = TextEditingController();
@@ -34,7 +35,6 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    File? image = context.watch<ImageProv>().imageDir;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Event"),
@@ -48,29 +48,32 @@ class _CreatePostState extends State<CreatePost> {
           child: ListView(
             children: [
               GestureDetector(
-                  child: Container(
-                    child: image == null
-                        ? const Center(child: Text("Pick Image"))
-                        : Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: FileImage(image)))),
-                    height: 200,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.0),
-                        border: Border.all(
-                            color: Colors.grey,
-                            width: 2.0,
-                            style: BorderStyle.solid)),
-                  ),
+                  child: image == null
+                      ? Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                  style: BorderStyle.solid)),
+                          child: const Center(
+                            child: Text(
+                              "Select Image",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300, fontSize: 24.0),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.fill, image: FileImage(image!)))),
                   onTap: () async {
-                    // image = await pickImage();
-                    await context.read<ImageProv>().pickImage();
-                    print(image);
-                    // setState(() {
-                    //   image = thisImage;
-                    // });
+                    var selected = await context.read<ImageProv>().pickImage();
+                    setState(() {
+                      image = selected;
+                    });
                   }),
               const SizedBox(height: 40.0),
               TextboxNoIcon(context, "Event Name", _eventNameController),
@@ -85,7 +88,34 @@ class _CreatePostState extends State<CreatePost> {
               const SizedBox(height: 40.0),
               TextboxNoIcon(context, "Venue", _venueController),
               const SizedBox(height: 40.0),
-              textArea(context, "Description", _descController)
+              textArea(context, "Description", _descController),
+              const SizedBox(height: 40.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Location Coordinates"),
+                controller: _dateController,
+                readOnly: true,
+                onTap: () {
+                  showModalBottomSheet(
+                      enableDrag: false,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0)),
+                      context: context,
+                      builder: (BuildContext context) {
+                        return FractionallySizedBox(
+                          heightFactor: 0.9,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            height: MediaQuery.of(context).size.height,
+                            child: const Maps(),
+                          ),
+                        );
+                      });
+                },
+              ),
             ],
           ),
         ),
@@ -94,16 +124,16 @@ class _CreatePostState extends State<CreatePost> {
   }
 }
 
-// Widget imageBox(BuildContext context, File? image) {
-//   return image == null
-//       ? const Center(
-//           child: Text(
-//             "Select Image",
-//             style: TextStyle(fontWeight: FontWeight.w300, fontSize: 24.0),
-//           ),
-//         )
-//       : Container(
-//           decoration: BoxDecoration(
-//               image:
-//                   DecorationImage(fit: BoxFit.fill, image: FileImage(image))));
-// }
+Widget imageBox(BuildContext context, File? image) {
+  return image == null
+      ? const Center(
+          child: Text(
+            "Select Image",
+            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 24.0),
+          ),
+        )
+      : Container(
+          decoration: BoxDecoration(
+              image:
+                  DecorationImage(fit: BoxFit.fill, image: FileImage(image))));
+}

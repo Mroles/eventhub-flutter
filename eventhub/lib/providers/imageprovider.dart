@@ -9,7 +9,6 @@ class ImageProv with ChangeNotifier {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return null;
     final imageDir = File(image.path);
-    print(imageDir);
     notifyListeners();
 
     return imageDir;
