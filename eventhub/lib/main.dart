@@ -7,6 +7,7 @@ import 'package:eventhub/screens/createpost.dart';
 import 'package:eventhub/screens/maps.dart';
 import 'package:eventhub/screens/post.dart';
 import 'package:eventhub/screens/profile.dart';
+import 'package:eventhub/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.orange,
       ),
-      home: CreatePost(),
+      home: PostPage(),
     );
   }
 }

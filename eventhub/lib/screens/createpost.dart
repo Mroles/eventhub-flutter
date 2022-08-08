@@ -5,6 +5,7 @@ import 'package:eventhub/providers/imageprovider.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -12,12 +13,15 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   File? image;
   DateTime pickedDate = DateTime.now();
   final _eventNameController = TextEditingController();
   final _dateController = TextEditingController();
   final _venueController = TextEditingController();
   final _descController = TextEditingController();
+  final _locationController = TextEditingController();
 
   _pickDate() async {
     DateTime? date = await showDatePicker(
@@ -31,6 +35,17 @@ class _CreatePostState extends State<CreatePost> {
         _dateController.text = DateFormat("yyyy-MM-dd").format(date);
       });
     }
+  }
+
+  _setLocation() async {
+    final SharedPreferences prefs = await _prefs;
+    String? locationName = (prefs.getString("location") ?? "");
+    String? lat = (prefs.getString("lat") ?? "");
+    String? long = (prefs.getString("long") ?? "");
+
+    setState(() {
+      _locationController.text = locationName;
+    });
   }
 
   @override
@@ -80,7 +95,10 @@ class _CreatePostState extends State<CreatePost> {
               const SizedBox(height: 40.0),
               TextFormField(
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), hintText: "Date"),
+                    border: OutlineInputBorder(),
+                    labelText: "Date",
+                    labelStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
                 controller: _dateController,
                 readOnly: true,
                 onTap: _pickDate,
@@ -93,8 +111,10 @@ class _CreatePostState extends State<CreatePost> {
               TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Location Coordinates"),
-                controller: _dateController,
+                    labelText: "Location",
+                    labelStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
+                controller: _locationController,
                 readOnly: true,
                 onTap: () {
                   showModalBottomSheet(
@@ -113,7 +133,7 @@ class _CreatePostState extends State<CreatePost> {
                             child: const Maps(),
                           ),
                         );
-                      });
+                      }).then((value) => {_setLocation()});
                 },
               ),
             ],

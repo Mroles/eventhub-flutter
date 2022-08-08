@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Maps extends StatefulWidget {
   const Maps({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _MapsState extends State<Maps> {
   late GoogleMapController mapController;
   CameraPosition? cameraPosition;
   String location = "Location Name";
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   final LatLng _center = const LatLng(6.0, 0.19);
 
@@ -61,6 +63,46 @@ class _MapsState extends State<Maps> {
                     CameraPosition(target: _center, zoom: 10.0),
               ),
             ),
+            Center(
+              child: Image.asset("assets/picker.png", width: 35, height: 35),
+            ),
+            Positioned(
+                bottom: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    child: Container(
+                        width: MediaQuery.of(context).size.width - 40,
+                        child: ListTile(
+                          // leading: Image.asset(
+                          //   "assets/picker.png",
+                          //   width: 25,
+                          // ),
+                          title: Text(
+                            location,
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: IconButton(
+                              onPressed: () => {
+                                    _prefs.then((SharedPreferences prefs) {
+                                      prefs.setString("location", location);
+                                      prefs.setString(
+                                          "lat",
+                                          cameraPosition!.target.latitude
+                                              .toString());
+                                      prefs.setString(
+                                          "long",
+                                          cameraPosition!.target.longitude
+                                              .toString());
+                                    }),
+                                    Navigator.pop(context)
+                                  },
+                              icon:
+                                  Icon(Icons.location_pin, color: Colors.red)),
+                          dense: true,
+                        )),
+                  ),
+                )),
             if (context.watch<LocationProvider>().searchResults.isNotEmpty)
               Container(
                 height: MediaQuery.of(context).size.height,
