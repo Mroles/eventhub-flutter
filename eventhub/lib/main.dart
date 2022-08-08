@@ -46,7 +46,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.orange,
       ),
-      home: PostPage(),
+      home: const MyHomePage(
+        title: 'EventHub',
+      ),
     );
   }
 }

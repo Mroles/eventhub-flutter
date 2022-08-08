@@ -7,12 +7,15 @@ class PostPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text("Posts")),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("Posts"),
+      //   backgroundColor: Colors.transparent,
+      //   centerTitle: true,
+      //   elevation: 0,
+      // ),
       body: post(context),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.orange,
         child: const Icon(Icons.add),
         onPressed: () {
           navigateToPageLite(0, context, CreatePost());
