@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:eventhub/main.dart';
 import 'package:eventhub/screens/forgotpassword.dart';
 import 'package:eventhub/screens/signup.dart';
@@ -18,6 +19,8 @@ class _LoginState extends State<Login> {
 
   final formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  bool _switch = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +82,28 @@ class _LoginState extends State<Login> {
                               });
                             }),
                   const SizedBox(height: 20.0),
+
+                  // GestureDetector(
+                  //   child: const Text("Don't Have an Account? Sign Up"),
+                  //   onTap: () {
+                  //     setState(() {
+                  //       _switch = !_switch;
+                  //     });
+                  //   },
+                  // ),
+
+                  // PageTransitionSwitcher(
+                  //     transitionBuilder:
+                  //         (child, primaryAnimation, secondaryAnimation) {
+                  //       return SharedAxisTransition(
+                  //         animation: primaryAnimation,
+                  //         secondaryAnimation: secondaryAnimation,
+                  //         child: child,
+                  //         transitionType: SharedAxisTransitionType.horizontal,
+                  //       );
+                  //     },
+                  //     child: _switch ? SignUp() : Text("data"))
+
                   TextTap(context, "Don't Have an Account? Sign Up", SignUp())
                 ],
               ),

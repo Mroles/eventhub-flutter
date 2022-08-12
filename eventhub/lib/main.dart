@@ -4,6 +4,7 @@ import 'package:eventhub/providers/locationprovider.dart';
 import 'package:eventhub/providers/loginprovider.dart';
 import 'package:eventhub/screens/chat.dart';
 import 'package:eventhub/screens/createpost.dart';
+import 'package:eventhub/screens/login.dart';
 import 'package:eventhub/screens/maps.dart';
 import 'package:eventhub/screens/post.dart';
 import 'package:eventhub/screens/profile.dart';
@@ -46,9 +47,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.orange,
       ),
-      home: const MyHomePage(
-        title: 'EventHub',
-      ),
+      // home: const MyHomePage(
+      //   title: 'EventHub',
+      // ),
+      home: PostPage(),
     );
   }
 }
