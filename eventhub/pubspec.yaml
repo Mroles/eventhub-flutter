@@ -45,6 +45,10 @@ dependencies:
   google_maps_flutter:
   geolocator:
   animations:
+  firebase_core: ^1.20.1
+  firebase_storage: ^10.3.5
+  connectivity_plus: ^2.3.6+1
+  
   
 
 dev_dependencies:
@@ -73,6 +77,7 @@ flutter:
   assets:
     - assets/profile.png
     - assets/picker.png
+    - assets/certificates/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

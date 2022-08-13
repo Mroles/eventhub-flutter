@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:eventhub/providers/imageprovider.dart';
 import 'package:eventhub/providers/locationprovider.dart';
@@ -9,11 +11,29 @@ import 'package:eventhub/screens/maps.dart';
 import 'package:eventhub/screens/post.dart';
 import 'package:eventhub/screens/profile.dart';
 import 'package:eventhub/screens/splash.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 final imageProv = ImageProv();
-void main() {
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // ByteData data =
+  //     await rootBundle.load('assets/certificates/lets-encrypt-r3.pem');
+  // SecurityContext.defaultContext
+  //     .setTrustedCertificatesBytes(data.buffer.asUint8List());
+  HttpOverrides.global = new MyHttpOverrides();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(

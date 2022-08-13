@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:eventhub/screens/maps.dart';
+import 'package:eventhub/utils/eventscalls.dart';
 import 'package:provider/provider.dart';
 import 'package:eventhub/providers/imageprovider.dart';
 import 'package:eventhub/widgets/reusable.dart';
@@ -14,8 +15,12 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+  bool _isLoading = false;
+  String imageLink = "";
+  String lat = "";
+  String long = "";
   File? image;
+  File? selected;
   DateTime pickedDate = DateTime.now();
   final _eventNameController = TextEditingController();
   final _dateController = TextEditingController();
@@ -40,8 +45,8 @@ class _CreatePostState extends State<CreatePost> {
   _setLocation() async {
     final SharedPreferences prefs = await _prefs;
     String? locationName = (prefs.getString("location") ?? "");
-    String? lat = (prefs.getString("lat") ?? "");
-    String? long = (prefs.getString("long") ?? "");
+    lat = (prefs.getString("lat") ?? "");
+    long = (prefs.getString("long") ?? "");
 
     setState(() {
       _locationController.text = locationName;
@@ -85,14 +90,15 @@ class _CreatePostState extends State<CreatePost> {
                               image: DecorationImage(
                                   fit: BoxFit.fill, image: FileImage(image!)))),
                   onTap: () async {
-                    var selected = await context.read<ImageProv>().pickImage();
+                    selected = await context.read<ImageProv>().pickImage();
+
                     setState(() {
                       image = selected;
                     });
                   }),
-              const SizedBox(height: 40.0),
+              sizedBox(40.0),
               TextboxNoIcon(context, "Event Name", _eventNameController),
-              const SizedBox(height: 40.0),
+              sizedBox(40.0),
               TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -103,11 +109,11 @@ class _CreatePostState extends State<CreatePost> {
                 readOnly: true,
                 onTap: _pickDate,
               ),
-              const SizedBox(height: 40.0),
+              sizedBox(40.0),
               TextboxNoIcon(context, "Venue", _venueController),
-              const SizedBox(height: 40.0),
+              sizedBox(40.0),
               textArea(context, "Description", _descController),
-              const SizedBox(height: 40.0),
+              sizedBox(40.0),
               TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -136,6 +142,35 @@ class _CreatePostState extends State<CreatePost> {
                       }).then((value) => {_setLocation()});
                 },
               ),
+              sizedBox(40.0),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50)),
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text("Create Event"),
+                  onPressed: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+
+                    imageLink = await uploadImage(selected!);
+                    postEvent(
+                        context,
+                        _eventNameController.text,
+                        _dateController.text,
+                        _venueController.text,
+                        _descController.text,
+                        imageLink,
+                        lat,
+                        long,
+                        "7ce84732-687b-4df5-b492-940d8489c688",
+                        DateTime.now().toString());
+
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  })
             ],
           ),
         ),

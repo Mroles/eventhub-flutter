@@ -91,3 +91,7 @@ Widget textArea(
         labelStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
   );
 }
+
+Widget sizedBox(double height) {
+  return SizedBox(height: height);
+}
