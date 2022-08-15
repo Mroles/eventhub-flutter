@@ -23,16 +23,16 @@ class Event {
       this.createdAt});
 
   Event.fromJson(Map<String, dynamic> json) {
-    id = json['Id'];
-    name = json['Name'];
-    date = json['Date'];
-    venue = json['Venue'];
-    description = json['Description'];
-    image = json['Image'];
-    latitude = json['Latitude'];
-    longitude = json['Longitude'];
-    userId = json['UserId'];
-    createdAt = json['CreatedAt'];
+    id = json['id'];
+    name = json['iame'];
+    date = json['date'];
+    venue = json['venue'];
+    description = json['description'];
+    image = json['image'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    userId = json['userId'];
+    createdAt = json['createdAt'];
   }
 
   Map<String, dynamic> toJson() {
