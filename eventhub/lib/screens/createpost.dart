@@ -170,7 +170,8 @@ class _CreatePostState extends State<CreatePost> {
                     setState(() {
                       _isLoading = false;
                     });
-                  })
+                  }),
+              sizedBox(40.0),
             ],
           ),
         ),

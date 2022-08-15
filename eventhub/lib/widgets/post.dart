@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../models/event.dart';
 
-Widget post(BuildContext context) {
+Widget post(Event event) {
   // ignore: unnecessary_new
   return Padding(
     padding: const EdgeInsets.all(8.0),
@@ -13,7 +14,7 @@ Widget post(BuildContext context) {
           boxShadow: [
             BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
-                offset: Offset(0, 5),
+                offset: const Offset(0, 5),
                 blurRadius: 3)
           ]),
       child: Padding(
@@ -23,9 +24,10 @@ Widget post(BuildContext context) {
             Row(
               children: [
                 Column(
-                  children: const [
+                  children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage('assets/profile.png'),
+                      backgroundImage:
+                          NetworkImage("https://picsum.photos/200/300"),
                       radius: 30,
                     )
                   ],
@@ -45,10 +47,10 @@ Widget post(BuildContext context) {
                         ],
                       ),
                       Row(
-                        children: const [
+                        children: [
                           Text(
-                            "date",
-                            style: TextStyle(fontWeight: FontWeight.w300),
+                            event.date == null ? "" : event.date!,
+                            style: const TextStyle(fontWeight: FontWeight.w300),
                           )
                         ],
                       )
@@ -64,12 +66,12 @@ Widget post(BuildContext context) {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
               child: Row(
-                children: const [Text("sxercdtfvgbyfvrtvbygnhuygtfr")],
+                children: [Text(event.name == null ? "" : event.name!)],
               ),
             ),
             CachedNetworkImage(
               height: 250,
-              imageUrl: "https://picsum.photos/200/300",
+              imageUrl: event.image == null ? "" : event.image!,
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4.0),

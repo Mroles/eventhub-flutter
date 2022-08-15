@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
       // home: const MyHomePage(
       //   title: 'EventHub',
       // ),
-      home: PostPage(),
+      home: MyHomePage(title: "EventHub"),
     );
   }
 }
