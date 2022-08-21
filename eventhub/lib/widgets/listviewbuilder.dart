@@ -4,6 +4,7 @@ import '../models/event.dart';
 
 Widget listViewBuilder(List<Event> events, ScrollController scrollController) {
   return ListView.builder(
+    // key: const PageStorageKey<String>("events"),
     controller: scrollController,
     itemCount: events.length,
     itemBuilder: (BuildContext context, int index) {
@@ -12,7 +13,7 @@ Widget listViewBuilder(List<Event> events, ScrollController scrollController) {
       if (index < events.length) {
         return post(event);
       } else {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       }

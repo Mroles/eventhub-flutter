@@ -13,7 +13,7 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin<PostPage> {
   int page = 1;
   bool hasMore = true;
   Future<List<Event>?>? events;
@@ -23,8 +23,9 @@ class _PostPageState extends State<PostPage>
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     events = getEvents(page);
+    super.initState();
+
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -79,6 +80,7 @@ class _PostPageState extends State<PostPage>
         RefreshIndicator(
           onRefresh: () => refresh(),
           child: FutureBuilder<List<Event>?>(
+              key: const PageStorageKey("futureBuilder"),
               future: events,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {

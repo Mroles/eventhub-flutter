@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 final imageProv = ImageProv();
+final bucketGlobal = PageStorageBucket();
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -116,13 +117,13 @@ class _MyHomePageState extends State<MyHomePage> {
           title: index == 0
               ? const Text("Chat")
               : index == 1
-                  ? const Text("Posts")
+                  ? const Text("Events")
                   : const Text("Profile"),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white.withOpacity(0.25),
           centerTitle: true,
           elevation: 0,
         ),
-        body: screens[index],
+        body: PageStorage(bucket: bucketGlobal, child: screens[index]),
         bottomNavigationBar: Theme(
           data: Theme.of(context)
               .copyWith(iconTheme: const IconThemeData(color: Colors.white)),
