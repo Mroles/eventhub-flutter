@@ -24,7 +24,7 @@ class Event {
 
   Event.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['iame'];
+    name = json['name'];
     date = json['date'];
     venue = json['venue'];
     description = json['description'];

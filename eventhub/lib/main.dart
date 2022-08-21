@@ -111,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     return Scaffold(
+        extendBody: true,
         appBar: AppBar(
           title: index == 0
               ? const Text("Chat")

@@ -76,13 +76,17 @@ Future<dynamic> postEvent(
   return {"body": jsonResponse, "statusCode": 200};
 }
 
-Future<List<Event>?>? getEvents() async {
+Future<List<Event>?>? getEvents(int page) async {
   if (!await _checkConnectivity()) return null;
 
   List jsonResponse;
 
   try {
-    final response = await http.get(Uri.parse(BASE_URL + 'api/event/all'));
+    final response = await http.get(Uri.parse(BASE_URL +
+        'api/event/all?' +
+        'Page=' +
+        page.toString() +
+        '&ItemsPerPage=2'));
 
     jsonResponse = jsonDecode(response.body);
     print(response.body);
@@ -96,27 +100,27 @@ Future<List<Event>?>? getEvents() async {
   }
 }
 
-Future<List<Test>?>? test() async {
-  if (!await _checkConnectivity()) return null;
+// Future<List<Test>?>? test() async {
+//   if (!await _checkConnectivity()) return null;
 
-  List jsonResponse;
+//   List jsonResponse;
 
-  try {
-    final response =
-        await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
-    // jsonResponse = _response(response);
+//   try {
+//     final response =
+//         await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
+//     // jsonResponse = _response(response);
 
-    //Event.fromJson(jsonDecode(response.body));
+//     //Event.fromJson(jsonDecode(response.body));
 
-    jsonResponse = jsonDecode(response.body);
-    return jsonResponse.map((e) => Test.fromJson(e)).toList();
+//     jsonResponse = jsonDecode(response.body);
+//     return jsonResponse.map((e) => Test.fromJson(e)).toList();
 
-    // return jsonResponse;
-  } on SocketException catch (e) {
-    print('Error occured: ${e.message}');
-    return null;
-  }
-}
+//     // return jsonResponse;
+//   } on SocketException catch (e) {
+//     print('Error occured: ${e.message}');
+//     return null;
+//   }
+// }
 
 // dynamic _response(http.Response response) {
 //   switch (response.statusCode) {

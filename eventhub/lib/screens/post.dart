@@ -12,36 +12,94 @@ class PostPage extends StatefulWidget {
   State<PostPage> createState() => _PostPageState();
 }
 
-class _PostPageState extends State<PostPage> {
-  Future<List<Event>?>? events = getEvents();
+class _PostPageState extends State<PostPage>
+    with AutomaticKeepAliveClientMixin {
+  int page = 1;
+  bool hasMore = true;
+  Future<List<Event>?>? events;
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    events = getEvents(page);
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        await fetchMore(await events);
+      }
+    });
+  }
+
+  fetchMore(List<Event>? events) async {
+    page++;
+    var newEvents = await getEvents(page);
+    if (newEvents!.isNotEmpty) {
+      setState(() {
+        page++;
+        print("Page: " + page.toString());
+        events?.addAll(newEvents);
+      });
+    }
+  }
+
+  Future<void> refresh() async {
+    setState(() {
+      page = 1;
+      events = getEvents(page);
+    });
+  }
+
+  // @override
+  // void setState(VoidCallback fn) {
+  //   // TODO: implement setState
+  //   super.setState(fn);
+  //   page++;
+  //   print("SetState: " + page.toString());
+  //   events = getEvents(page);
+  // }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: [
-        FutureBuilder<List<Event>?>(
-            future: events,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-                return Center(child: Text("Error"));
-              } else if (snapshot.connectionState != ConnectionState.done) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (snapshot.hasData) {
-                  final eves = snapshot.data;
-                  //  return Center(child: Text("data"));
-                  return listViewBuilder(eves!);
+        RefreshIndicator(
+          onRefresh: () => refresh(),
+          child: FutureBuilder<List<Event>?>(
+              future: events,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text("Error"));
+                } else if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
                 } else {
-                  return const Center(child: Text("Nothing to show"));
+                  if (snapshot.hasData) {
+                    final eves = snapshot.data;
+                    //  return Center(child: Text("data"));
+                    return listViewBuilder(eves!, _scrollController);
+                  } else {
+                    return const Center(child: Text("Nothing to show"));
+                  }
                 }
-              }
-            }),
+              }),
+        ),
 
         // post(context),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 12.0),
+          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 75.0),
           child: Align(
             alignment: Alignment.bottomRight,
             child: OpenContainer(

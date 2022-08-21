@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/event.dart';
 
 Widget post(Event event) {
-  // ignore: unnecessary_new
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
@@ -66,7 +65,10 @@ Widget post(Event event) {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
               child: Row(
-                children: [Text(event.name == null ? "" : event.name!)],
+                children: [
+                  Text(event.name == null ? "" : event.name!)
+                  // Text("data")
+                ],
               ),
             ),
             CachedNetworkImage(
@@ -86,11 +88,13 @@ Widget post(Event event) {
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
+                children: [
+                  // IconButton(
+                  //   color: Colors.red,
+                  //   onPressed: () {},
+                  //   icon: Icon(Icons.favorite),
+                  // ),
+                  Icon(Icons.favorite),
                   Padding(padding: EdgeInsets.fromLTRB(0.0, 0.0, 4.0, 0.0)),
                   Text("3"),
                   Padding(padding: EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0)),
