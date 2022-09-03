@@ -11,7 +11,7 @@ Widget listViewBuilder(List<Event> events, ScrollController scrollController) {
       final event = events[index];
 
       if (index < events.length) {
-        return post(event);
+        return post(event, context);
       } else {
         return const Center(
           child: CircularProgressIndicator(),
