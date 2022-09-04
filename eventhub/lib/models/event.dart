@@ -9,6 +9,7 @@ class Event {
   String? longitude;
   String? userId;
   String? createdAt;
+  String? locationName;
 
   Event(
       {this.id,
@@ -20,7 +21,8 @@ class Event {
       this.latitude,
       this.longitude,
       this.userId,
-      this.createdAt});
+      this.createdAt,
+      this.locationName});
 
   Event.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,6 +35,7 @@ class Event {
     longitude = json['longitude'];
     userId = json['userId'];
     createdAt = json['createdAt'];
+    locationName = json['locationName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +50,7 @@ class Event {
     data['Longitude'] = this.longitude;
     data['UserId'] = this.userId;
     data['CreatedAt'] = this.createdAt;
+    data['LocationName'] = this.locationName;
     return data;
   }
 }

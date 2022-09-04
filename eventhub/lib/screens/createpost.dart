@@ -136,7 +136,7 @@ class _CreatePostState extends State<CreatePost> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0)),
                             height: MediaQuery.of(context).size.height,
-                            child: const Maps(),
+                            child: const Maps(latitude: "", longitude: ""),
                           ),
                         );
                       }).then((value) => {_setLocation()});
@@ -165,7 +165,8 @@ class _CreatePostState extends State<CreatePost> {
                         lat,
                         long,
                         "7ce84732-687b-4df5-b492-940d8489c688",
-                        DateTime.now().toString());
+                        DateTime.now().toString(),
+                        _locationController.text);
 
                     setState(() {
                       _isLoading = false;

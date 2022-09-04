@@ -46,6 +46,15 @@ class _EditPostState extends State<EditPost> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _eventNameController.text = widget.event.name!;
+    _dateController.text = widget.event.date!;
+    _venueController.text = widget.event.venue!;
+    _descController.text = widget.event.description!;
+  }
+
   _setLocation() async {
     final SharedPreferences prefs = await _prefs;
     String? locationName = (prefs.getString("location") ?? "");
@@ -61,7 +70,7 @@ class _EditPostState extends State<EditPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create Event"),
+        title: const Text("Edit Event"),
         backgroundColor: Colors.transparent,
         centerTitle: true,
         elevation: 0,
@@ -76,18 +85,9 @@ class _EditPostState extends State<EditPost> {
                       ? Container(
                           height: 200,
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                  style: BorderStyle.solid)),
-                          child: const Center(
-                            child: Text(
-                              "Select Image",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 24.0),
-                            ),
-                          ),
-                        )
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(widget.event.image!))))
                       : Container(
                           height: 200,
                           decoration: BoxDecoration(
@@ -140,7 +140,9 @@ class _EditPostState extends State<EditPost> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0)),
                             height: MediaQuery.of(context).size.height,
-                            child: const Maps(),
+                            child: Maps(
+                                latitude: widget.event.latitude!,
+                                longitude: widget.event.longitude!),
                           ),
                         );
                       }).then((value) => {_setLocation()});
@@ -152,15 +154,16 @@ class _EditPostState extends State<EditPost> {
                       minimumSize: const Size.fromHeight(50)),
                   child: _isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Create Event"),
+                      : const Text("Edit"),
                   onPressed: () async {
                     setState(() {
                       _isLoading = true;
                     });
 
-                    imageLink = await uploadImage(selected!);
-                    postEvent(
+                    imageLink = await switchImage(widget.event.image!, image!);
+                    editEvent(
                         context,
+                        widget.event.id!,
                         _eventNameController.text,
                         _dateController.text,
                         _venueController.text,
@@ -169,7 +172,7 @@ class _EditPostState extends State<EditPost> {
                         lat,
                         long,
                         "7ce84732-687b-4df5-b492-940d8489c688",
-                        DateTime.now().toString());
+                        _locationController.text);
 
                     setState(() {
                       _isLoading = false;

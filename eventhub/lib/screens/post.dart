@@ -84,6 +84,7 @@ class _PostPageState extends State<PostPage>
               future: events,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
+                  print(snapshot.error);
                   return const Center(child: Text("Error"));
                 } else if (snapshot.connectionState != ConnectionState.done) {
                   return const Center(child: CircularProgressIndicator());

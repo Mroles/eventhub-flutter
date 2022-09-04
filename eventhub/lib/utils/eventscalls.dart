@@ -9,7 +9,73 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
+
+Future<dynamic> editEvent(
+    BuildContext context,
+    int id,
+    String name,
+    String date,
+    String venue,
+    String description,
+    String Image,
+    String latitude,
+    String longitude,
+    String userId,
+    String locationName) async {
+  try {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    if (!await _checkConnectivity()) {
+      SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+        snacc(context, "No Internet Connection");
+      });
+      return {"body": null, "statusCode": 0};
+    }
+
+    final response =
+        await http.put(Uri.parse(BASE_URL + 'api/event/edit/' + id.toString()),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              "Name": name,
+              "Date": date,
+              "Venue": venue,
+              "Description": description,
+              "Image": Image,
+              "Latitude": latitude,
+              "Longitude": longitude,
+              "UserId": userId,
+            }));
+
+    if (response.statusCode == 200) {
+      SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+        Navigator.pop(context);
+      });
+      final SharedPreferences prefs = await _prefs;
+      prefs.remove("lat");
+      prefs.remove("long");
+      prefs.remove("location");
+    } else {
+      snacc(context, "An Error Occured");
+    }
+
+    return {"body": null, "statusCode": 0};
+  } on SocketException catch (e) {
+    print("No");
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      snacc(context, "No Internet Connection");
+    });
+    return {"body": null, "statusCode": 0};
+  } catch (e) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      snacc(context, "An error occured. Please try again");
+    });
+    print('Error occured: ${e}');
+    return {"body": null, "statusCode": 0};
+  }
+}
 
 Future<dynamic> postEvent(
     BuildContext context,
@@ -21,12 +87,13 @@ Future<dynamic> postEvent(
     String latitude,
     String longitude,
     String userId,
-    String createdAt) async {
+    String createdAt,
+    String locationName) async {
   var jsonResponse;
 
   try {
     // print(BASE_URL);
-
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     if (!await _checkConnectivity()) {
       SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
         snacc(context, "No Internet Connection");
@@ -57,9 +124,17 @@ Future<dynamic> postEvent(
           "CreatedAt": createdAt
         }));
 
-    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-      Navigator.pop(context);
-    });
+    if (response.statusCode == 200) {
+      SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+        Navigator.pop(context);
+      });
+      final SharedPreferences prefs = await _prefs;
+      prefs.remove("lat");
+      prefs.remove("long");
+      prefs.remove("location");
+    } else {
+      snacc(context, "An Error Occured");
+    }
   } on SocketException catch (e) {
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       snacc(context, "No Internet Connection");
@@ -172,6 +247,15 @@ Future<String> uploadImage(File image) async {
   print(downloadUrl);
 
   return downloadUrl;
+}
+
+deleteImage(String image) async {
+  FirebaseStorage.instance.refFromURL(image).delete();
+}
+
+Future<String> switchImage(String image, File imageToDelete) async {
+  deleteImage(image);
+  return uploadImage(imageToDelete);
 }
 
 Future<bool> _checkConnectivity() async {

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventhub/models/event.dart';
+import 'package:eventhub/screens/editpost.dart';
 import 'package:eventhub/utils/functions.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,6 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
-  var format = DateFormat("ddd, dd MMM, yyyy");
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +26,16 @@ class _EventDetailState extends State<EventDetail> {
                   expandedHeight: 350.0,
                   floating: true,
                   backgroundColor: Colors.transparent,
+                  stretch: true,
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          navigateToPageLite(
+                              0, context, EditPost(event: widget.event));
+                        },
+                        icon: const Icon(Icons.edit)),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
+                  ],
                   flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
                     tag: widget.event,
@@ -60,7 +69,7 @@ class _EventDetailState extends State<EventDetail> {
                   sizedBox(5.0),
                   Text(
                     formatDate(widget.event.date!),
-                    style: TextStyle(fontSize: 15.0),
+                    style: const TextStyle(fontSize: 15.0),
                   ),
                   sizedBox(5.0),
                   Row(

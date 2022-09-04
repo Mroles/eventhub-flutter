@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Maps extends StatefulWidget {
-  const Maps({Key? key}) : super(key: key);
+  final String longitude;
+  final String latitude;
+  const Maps({Key? key, required this.longitude, required this.latitude})
+      : super(key: key);
 
   @override
   _MapsState createState() => _MapsState();
@@ -17,11 +20,26 @@ class _MapsState extends State<Maps> {
   CameraPosition? cameraPosition;
   String location = "Location Name";
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  double lat = 6.0;
+  double long = 0.19;
+  LatLng _center = LatLng(6.0, 0.19);
 
-  final LatLng _center = const LatLng(6.0, 0.19);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (widget.latitude != "" && widget.longitude != "") {
+      lat = double.parse(widget.latitude);
+      long = double.parse(widget.longitude);
+    }
+
+    _center = LatLng(lat, long);
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    print(_center);
   }
 
   @override
