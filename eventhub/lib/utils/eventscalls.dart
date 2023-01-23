@@ -24,6 +24,10 @@ Future<dynamic> editEvent(
     String longitude,
     String userId,
     String locationName) async {
+  print("description:" + description);
+  print("lat:" + latitude);
+  print("long:" + longitude);
+
   try {
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     if (!await _checkConnectivity()) {
@@ -47,6 +51,7 @@ Future<dynamic> editEvent(
               "Latitude": latitude,
               "Longitude": longitude,
               "UserId": userId,
+              "LocationName": locationName
             }));
 
     if (response.statusCode == 200) {
@@ -121,7 +126,8 @@ Future<dynamic> postEvent(
           "Latitude": latitude,
           "Longitude": longitude,
           "UserId": userId,
-          "CreatedAt": createdAt
+          "CreatedAt": createdAt,
+          "LocationName": locationName
         }));
 
     if (response.statusCode == 200) {
@@ -169,6 +175,21 @@ Future<List<Event>?>? getEvents(int page) async {
     return jsonResponse.map((e) => Event.fromJson(e)).toList();
 
     // return jsonResponse;
+  } on SocketException catch (e) {
+    print('Error occured: ${e.message}');
+    return null;
+  }
+}
+
+Future<Event?> getEvent(int id) async {
+  if (!await _checkConnectivity()) return null;
+
+  try {
+    final response =
+        await http.get(Uri.parse(BASE_URL + 'api/event/' + id.toString()));
+
+    var jsonResponse = jsonDecode(response.body);
+    return jsonResponse.map((e) => Event.fromJson(e));
   } on SocketException catch (e) {
     print('Error occured: ${e.message}');
     return null;

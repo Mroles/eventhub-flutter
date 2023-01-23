@@ -71,7 +71,8 @@ class MyApp extends StatelessWidget {
       // home: const MyHomePage(
       //   title: 'EventHub',
       // ),
-      home: MyHomePage(title: "EventHub"),
+      // home: MyHomePage(title: "EventHub"),
+      home: Login(),
     );
   }
 }

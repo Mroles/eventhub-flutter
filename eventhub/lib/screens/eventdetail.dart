@@ -1,21 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventhub/models/event.dart';
 import 'package:eventhub/screens/editpost.dart';
+import 'package:eventhub/utils/eventscalls.dart';
 import 'package:eventhub/utils/functions.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class EventDetail extends StatefulWidget {
   final Event event;
 
-  EventDetail({Key? key, required this.event}) : super(key: key);
+  const EventDetail({Key? key, required this.event}) : super(key: key);
 
   @override
   State<EventDetail> createState() => _EventDetailState();
 }
 
 class _EventDetailState extends State<EventDetail> {
+  refresh() {
+    setState(() {
+      getEvent(widget.event.id!);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +38,8 @@ class _EventDetailState extends State<EventDetail> {
                   actions: [
                     IconButton(
                         onPressed: () {
-                          navigateToPageLite(
-                              0, context, EditPost(event: widget.event));
+                          navigateToPageLite(0, context,
+                              EditPost(event: widget.event), refresh());
                         },
                         icon: const Icon(Icons.edit)),
                     IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
@@ -75,15 +83,26 @@ class _EventDetailState extends State<EventDetail> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(
-                        Icons.favorite,
-                        size: 45.0,
-                        color: Color.fromARGB(255, 197, 23, 11),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.favorite,
+                          size: 45.0,
+                          color: Color.fromARGB(255, 197, 23, 11),
+                        ),
+                        onPressed: () {},
                       ),
-                      Icon(
-                        Icons.directions,
-                        size: 45.0,
-                        color: Colors.green,
+                      IconButton(
+                        icon: const Icon(
+                          Icons.directions,
+                          size: 45.0,
+                          color: (Colors.green),
+                        ),
+                        onPressed: () async {
+                          final availableMaps = await MapLauncher.installedMaps;
+
+                          await availableMaps.first.showMarker(
+                              coords: Coords(6.0, 0.19), title: "title");
+                        },
                       ),
                     ],
                   ),

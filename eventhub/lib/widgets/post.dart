@@ -8,7 +8,8 @@ Widget post(Event event, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: GestureDetector(
-      onTap: () => {navigateToPageLite(0, context, EventDetail(event: event))},
+      onTap: () =>
+          {navigateToPageLite(0, context, EventDetail(event: event), null)},
       child: Container(
         height: 410,
         decoration: BoxDecoration(

@@ -28,7 +28,8 @@ class _PostPageState extends State<PostPage>
 
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+              _scrollController.position.maxScrollExtent &&
+          hasMore) {
         await fetchMore(await events);
       }
     });
@@ -43,6 +44,8 @@ class _PostPageState extends State<PostPage>
         print("Page: " + page.toString());
         events?.addAll(newEvents);
       });
+    } else {
+      hasMore = false;
     }
   }
 

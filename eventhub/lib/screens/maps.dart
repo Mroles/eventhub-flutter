@@ -35,6 +35,9 @@ class _MapsState extends State<Maps> {
     }
 
     _center = LatLng(lat, long);
+
+    print(lat);
+    print(long);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -115,8 +118,8 @@ class _MapsState extends State<Maps> {
                                     }),
                                     Navigator.pop(context)
                                   },
-                              icon:
-                                  Icon(Icons.location_pin, color: Colors.red)),
+                              icon: const Icon(Icons.location_pin,
+                                  color: Colors.red)),
                           dense: true,
                         )),
                   ),

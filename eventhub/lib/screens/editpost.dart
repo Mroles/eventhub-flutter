@@ -53,6 +53,10 @@ class _EditPostState extends State<EditPost> {
     _dateController.text = widget.event.date!;
     _venueController.text = widget.event.venue!;
     _descController.text = widget.event.description!;
+
+    print("locationName: " + widget.event.locationName!);
+    _locationController.text =
+        widget.event.locationName == null ? "ll" : widget.event.locationName!;
   }
 
   _setLocation() async {
@@ -121,7 +125,6 @@ class _EditPostState extends State<EditPost> {
               TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Location",
                     labelStyle:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
                 controller: _locationController,
@@ -160,7 +163,11 @@ class _EditPostState extends State<EditPost> {
                       _isLoading = true;
                     });
 
-                    imageLink = await switchImage(widget.event.image!, image!);
+                    if (image != null) {
+                      imageLink =
+                          await switchImage(widget.event.image!, image!);
+                    }
+
                     editEvent(
                         context,
                         widget.event.id!,

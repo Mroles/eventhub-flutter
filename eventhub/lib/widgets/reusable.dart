@@ -69,7 +69,7 @@ Widget TextTap(BuildContext context, String text, Widget widget) {
       style: const TextStyle(color: Color.fromARGB(255, 206, 22, 9)),
     ),
     onTap: () => text.toLowerCase() == "forgot password"
-        ? navigateToPageLite(0, context, widget)
+        ? navigateToPageLite(0, context, widget, null)
         : navigateToPage(0, context, widget),
   );
 }
