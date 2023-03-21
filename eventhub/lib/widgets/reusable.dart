@@ -1,13 +1,18 @@
-import 'package:eventhub/screens/login.dart';
+import 'package:eventhub/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/loginprovider.dart';
 import '../utils/functions.dart';
 
 Widget Textbox(BuildContext context, String labeltext,
     TextEditingController textEditingController, Widget widget) {
+  Size size = MediaQuery.of(context).size;
   return Container(
+    //padding: const EdgeInsets.symmetric(horizontal: 20),
+    width: size.width * 0.95,
+    decoration: BoxDecoration(
+      color: (tertiaryColorLight),
+      borderRadius: BorderRadius.circular(29),
+    ),
+
     child: TextFormField(
       autocorrect: false,
       obscureText: labeltext.toLowerCase() == "password" ||
@@ -16,11 +21,13 @@ Widget Textbox(BuildContext context, String labeltext,
           : false,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-          border: const OutlineInputBorder(),
+          border: InputBorder.none,
+          iconColor: secondaryColorLight,
+          hintStyle: TextStyle(color: secondaryColorLight),
           prefixIcon: widget,
+          prefixIconColor: secondaryColorLight,
           labelText: labeltext,
-          labelStyle:
-              const TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
+          labelStyle: const TextStyle(color: secondaryColorLight)),
       controller: textEditingController,
     ),
   );
@@ -48,25 +55,32 @@ Widget TextboxNoIcon(BuildContext context, String labeltext,
 
 Widget LargeButton(
     BuildContext context, bool _isLoading, String buttonText, Widget widget) {
-  return ElevatedButton(
-      style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-      child: _isLoading
-          ? const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-            )
-          : Text(buttonText),
-      onPressed: () => {
-            _isLoading ? null : context.read<LoadingProvider>().change(),
-            navigateToPage(0, context, widget),
-            context.read<LoadingProvider>().change()
-          });
+  Size size = MediaQuery.of(context).size;
+  return Container(
+    width: size.width * 0.95,
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(29),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              elevation: 0,
+              backgroundColor: secondaryColorLight),
+          onPressed: () {
+            navigateToPage(0, context, widget);
+          },
+          child: Text(
+            buttonText,
+            style: const TextStyle(color: Colors.white),
+          )),
+    ),
+  );
 }
 
 Widget TextTap(BuildContext context, String text, Widget widget) {
   return GestureDetector(
     child: Text(
       text,
-      style: const TextStyle(color: Color.fromARGB(255, 206, 22, 9)),
+      style: const TextStyle(color: secondaryColorLight),
     ),
     onTap: () => text.toLowerCase() == "forgot password"
         ? navigateToPageLite(0, context, widget, null)

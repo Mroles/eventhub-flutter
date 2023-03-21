@@ -1,8 +1,9 @@
-import 'package:animations/animations.dart';
+import 'package:eventhub/globals.dart';
 import 'package:eventhub/main.dart';
 import 'package:eventhub/screens/forgotpassword.dart';
 import 'package:eventhub/screens/signup.dart';
 import 'package:eventhub/utils/accountcalls.dart';
+import 'package:eventhub/widgets/background.dart';
 import 'package:eventhub/widgets/reusable.dart';
 import 'package:flutter/material.dart';
 import '../utils/functions.dart';
@@ -19,46 +20,51 @@ class _LoginState extends State<Login> {
 
   final formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  bool _switch = false;
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-            Color.fromARGB(255, 87, 44, 194),
-            Color.fromARGB(255, 56, 145, 213)
-          ])),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 40.0),
-                  Textbox(context, "Email or Username", _emailController,
-                      const Icon(Icons.person)),
-                  const SizedBox(height: 40.0),
-                  Textbox(context, "Password", _passwordController,
-                      const Icon(Icons.key)),
-                  const SizedBox(height: 20.0),
-                  Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    TextTap(context, "Forgot Password", ForgotPassword())
-                  ]),
-                  const SizedBox(height: 40.0),
-                  ElevatedButton(
+      body: Background(
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("LOGIN"),
+              Container(
+                decoration: BoxDecoration(color: tertiaryColorLight),
+              ),
+              SizedBox(height: size.width * 0.04),
+              Textbox(context, "Email or Username", _emailController,
+                  const Icon(Icons.person)),
+              SizedBox(height: size.width * 0.04),
+              Textbox(context, "Password", _passwordController,
+                  const Icon(Icons.lock)),
+              SizedBox(height: size.width * 0.04),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child:
+                        TextTap(context, "Forgot Password", ForgotPassword()))
+              ]),
+              SizedBox(height: size.width * 0.04),
+              Container(
+                width: size.width * 0.95,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(29),
+                  child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(50)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 0,
+                          backgroundColor: secondaryColorLight),
                       child: _isLoading
                           ? const CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.black),
                             )
-                          : const Text("Login"),
+                          : const Text("LOGIN"),
                       onPressed: _isLoading
                           ? null
                           : () async {
@@ -81,33 +87,33 @@ class _LoginState extends State<Login> {
                                 _isLoading = false;
                               });
                             }),
-                  const SizedBox(height: 20.0),
-
-                  // GestureDetector(
-                  //   child: const Text("Don't Have an Account? Sign Up"),
-                  //   onTap: () {
-                  //     setState(() {
-                  //       _switch = !_switch;
-                  //     });
-                  //   },
-                  // ),
-
-                  // PageTransitionSwitcher(
-                  //     transitionBuilder:
-                  //         (child, primaryAnimation, secondaryAnimation) {
-                  //       return SharedAxisTransition(
-                  //         animation: primaryAnimation,
-                  //         secondaryAnimation: secondaryAnimation,
-                  //         child: child,
-                  //         transitionType: SharedAxisTransitionType.horizontal,
-                  //       );
-                  //     },
-                  //     child: _switch ? SignUp() : Text("data"))
-
-                  TextTap(context, "Don't Have an Account? Sign Up", SignUp())
-                ],
+                ),
               ),
-            ),
+              const SizedBox(height: 20.0),
+
+              // GestureDetector(
+              //   child: const Text("Don't Have an Account? Sign Up"),
+              //   onTap: () {
+              //     setState(() {
+              //       _switch = !_switch;
+              //     });
+              //   },
+              // ),
+
+              // PageTransitionSwitcher(
+              //     transitionBuilder:
+              //         (child, primaryAnimation, secondaryAnimation) {
+              //       return SharedAxisTransition(
+              //         animation: primaryAnimation,
+              //         secondaryAnimation: secondaryAnimation,
+              //         child: child,
+              //         transitionType: SharedAxisTransitionType.horizontal,
+              //       );
+              //     },
+              //     child: _switch ? SignUp() : Text("data"))
+
+              TextTap(context, "Don't Have an Account? Sign Up", SignUp())
+            ],
           ),
         ),
       ),
