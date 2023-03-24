@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:eventhub/models/login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
+import '../utils/accountcalls.dart';
 import 'package:http/http.dart' as http;
 
 class LoadingProvider with ChangeNotifier {
@@ -19,28 +22,21 @@ class LoadingProvider with ChangeNotifier {
 
 class LoginLoadProvider extends ChangeNotifier {
   bool isLoading = false;
+  String _username = "";
+  String _password = "";
 
-  Future<int> logUserIn(String username, String password) async {
+  String get getUsername => _username;
+  String get getPassword => _password;
+
+  logIn(String username, String password) {
     isLoading = true;
-    final response = await http.post(Uri.parse(BASE_URL + 'api/account/login'),
-        body: {"Username": username, "Password": password});
+    _username = username;
+    _password = password;
+    notifyListeners();
 
-    switch (response.statusCode) {
-      case 200:
-        {
-          var token = jsonDecode(response.body);
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString("token", token["token"]);
-          await prefs.setString("username", token["username"]);
-          break;
-        }
-
-      default:
-        {
-          break;
-        }
-    }
-    isLoading = false;
-    return response.statusCode;
+    print(isLoading);
+    //int result = await logUserIn(username, password);
+    final timer = Timer(const Duration(seconds: 5),
+        () => {isLoading = false, print(_username), notifyListeners()});
   }
 }

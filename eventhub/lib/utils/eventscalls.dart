@@ -265,7 +265,6 @@ Future<String> uploadImage(File image) async {
       .putFile(image);
 
   String downloadUrl = await snapshot.ref.getDownloadURL();
-  print(downloadUrl);
 
   return downloadUrl;
 }
