@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:eventhub/models/login.dart';
+import 'package:eventhub/models/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/constants.dart';
+
 import '../utils/accountcalls.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,19 +23,27 @@ class LoadingProvider with ChangeNotifier {
 class LoginLoadProvider extends ChangeNotifier {
   bool isLoading = false;
   String _username = "";
+  String _fullname = "";
+  String _email = "";
   String _password = "";
+  SignUpModel _signUpModel=SignUpModel(username: "", fullname: "", email: "", password: "");
 
   String get getUsername => _username;
   String get getPassword => _password;
+  String get getFullName => _fullname;
+  String get getEmail => _email;
+  SignUpModel get getSignUpModel => _signUpModel;
 
-  logIn(String username, String password) async {
+ 
+
+  signUp(SignUpModel signUpModel) async {
     isLoading = true;
-    _username = username;
-    _password = password;
+    _signUpModel = signUpModel;
+
     notifyListeners();
 
     // print(isLoading);
-    int result = await logUserIn(username, password);
+    int result = await signUserUp(_signUpModel);
     // final timer = Timer(const Duration(seconds: 5),
     //     () => {isLoading = false, print(_username), notifyListeners()});
     notifyListeners();

@@ -15,6 +15,7 @@ import 'package:eventhub/screens/splash.dart';
 import 'package:eventhub/screens/testlogin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 final imageProv = ImageProv();
@@ -36,6 +37,7 @@ Future<void> main() async {
   // SecurityContext.defaultContext
   //     .setTrustedCertificatesBytes(data.buffer.asUint8List());
   HttpOverrides.global = new MyHttpOverrides();
+  await dotenv.load(fileName: "assets/.env");
   await Firebase.initializeApp();
   runApp(
     MultiProvider(providers: [
@@ -77,7 +79,7 @@ class MyApp extends StatelessWidget {
       //   title: 'EventHub',
       // ),
       // home: MyHomePage(title: "EventHub"),
-      home: TestLogin(),
+      home: PostPage(),
     );
   }
 }

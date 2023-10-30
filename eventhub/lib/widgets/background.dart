@@ -39,14 +39,14 @@ class Background extends StatelessWidget {
                 width: size.width,
                 color: secondaryColorLight,
               )),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: SvgPicture.asset(
-                "assets/wave.svg",
-                width: size.width,
-                color: secondaryColorLight,
-              )),
+          // Positioned(
+          //     bottom: 0,
+          //     right: 0,
+          //     child: SvgPicture.asset(
+          //       "assets/wave.svg",
+          //       width: size.width,
+          //       color: secondaryColorLight,
+          //     )),
           child,
         ],
       ),

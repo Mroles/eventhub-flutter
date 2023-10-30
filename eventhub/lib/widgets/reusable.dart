@@ -21,6 +21,7 @@ Widget Textbox(BuildContext context, String labeltext,
           : false,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(left: 15.0),
           border: InputBorder.none,
           iconColor: secondaryColorLight,
           hintStyle: TextStyle(color: secondaryColorLight),
@@ -35,7 +36,15 @@ Widget Textbox(BuildContext context, String labeltext,
 
 Widget TextboxNoIcon(BuildContext context, String labeltext,
     TextEditingController textEditingController) {
+  Size size = MediaQuery.of(context).size;
   return Container(
+    //padding: const EdgeInsets.symmetric(horizontal: 20),
+    width: size.width * 0.95,
+    decoration: BoxDecoration(
+      color: (tertiaryColorLight),
+      borderRadius: BorderRadius.circular(29),
+    ),
+
     child: TextFormField(
       autocorrect: false,
       obscureText: labeltext.toLowerCase() == "password" ||
@@ -44,10 +53,13 @@ Widget TextboxNoIcon(BuildContext context, String labeltext,
           : false,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-          border: const OutlineInputBorder(),
+          contentPadding: const EdgeInsets.only(left: 15.0),
+          border: InputBorder.none,
+          iconColor: secondaryColorLight,
+          hintStyle: TextStyle(color: secondaryColorLight),
+          prefixIconColor: secondaryColorLight,
           labelText: labeltext,
-          labelStyle:
-              const TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
+          labelStyle: const TextStyle(color: secondaryColorLight)),
       controller: textEditingController,
     ),
   );
@@ -96,16 +108,37 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snacc(
 
 Widget textArea(
     BuildContext context, String text, TextEditingController controller) {
-  return TextField(
-    keyboardType: TextInputType.multiline,
-    maxLines: null,
-    decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: text,
-        labelStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w200)),
+  return Container(
+    decoration: BoxDecoration(
+      color: (tertiaryColorLight),
+      borderRadius: BorderRadius.circular(29),
+    ),
+    child: TextField(
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(left: 15.0),
+          border: InputBorder.none,
+          iconColor: secondaryColorLight,
+          hintStyle: const TextStyle(
+            color: secondaryColorLight,
+          ),
+          prefixIconColor: secondaryColorLight,
+          labelText: text,
+          labelStyle: const TextStyle(color: secondaryColorLight)),
+    ),
   );
 }
 
 Widget sizedBox(double height) {
   return SizedBox(height: height);
+}
+
+Widget loader(double scale) {
+  return Transform.scale(
+    scale: scale,
+    child: const CircularProgressIndicator(
+      color: Colors.black,
+    ),
+  );
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:eventhub/models/signup.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
@@ -23,5 +24,22 @@ Future<int> logUserIn(String username, String password) async {
       }
   }
 
+  return response.statusCode;
+}
+
+Future<int> signUserUp(SignUpModel signUpModel) async {
+  final response = await http.post(Uri.parse(BASE_URL + 'api/account/register'),
+      body: signUpModel);
+
+  switch (response.statusCode) {
+    case 200:
+      {
+        break;
+      }
+    default:
+      {
+        break;
+      }
+  }
   return response.statusCode;
 }
